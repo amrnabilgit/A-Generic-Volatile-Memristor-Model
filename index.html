@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="description" content="Source codes and a brief overview of a generic compact volatile memristor model.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Generic Volatile Memristor Model</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+    html {
+        scroll-behavior: smooth;
+    }
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    #back-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: none;
+    }
+    .equation {
+        background-color: #f9fafb;
+        border-left: 4px solid #3b82f6;
+        padding: 1rem;
+        border-radius: 0.375rem;
+        margin: 1rem 0;
+        text-align: center;
+    }
+    /* Responsive fixes start here */
+    @media (max-width: 640px) {
+        nav .max-w-5xl {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        nav ul {
+            flex-direction: column;
+            width: 100%;
+            gap: 0.5rem;
+        }
+        nav ul li {
+            margin-bottom: 0.5rem;
+        }
+        main.max-w-5xl {
+            padding: 1rem !important;
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+        .equation {
+            font-size: 0.95rem;
+            padding: 0.5rem;
+            word-break: break-word;
+        }
+	.equation {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.equation mjx-container {
+    overflow-x: auto !important;
+    max-width: 100% !important;
+    display: block !important;
+}
+
+/* Optional: Make equations a bit smaller on small screens */
+@media (max-width: 640px) {
+    .equation {
+        font-size: 0.95rem;
+        padding: 0.5rem;
+    }
+    .equation mjx-container {
+        font-size: 0.95em !important;
+    }
+}
+    
+        #back-to-top {
+            right: 10px;
+            bottom: 10px;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+    }
+</style>
+
+</head>
+<body class="bg-gray-100 font-sans text-gray-800 leading-relaxed">
+    <nav class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">A Generic Volatile Memristor Model</h1>
+            <ul class="flex space-x-4">
+                <li><a href="#overview" class="hover:underline">Overview</a></li>
+                <li><a href="#equations" class="hover:underline">Equations</a></li>
+                <li><a href="#voltage-controlled" class="hover:underline">Voltage Model</a></li>
+                <li><a href="#current-controlled" class="hover:underline">Current Model</a></li>
+                <li><a href="#code" class="hover:underline">Code</a></li>
+                <li><a href="#references" class="hover:underline">References</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main class="max-w-5xl mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
+        <section id="overview" class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Overview</h2>
+            <p class="mb-4">
+                This page provides a concise overview of the paper titled <a href="https://iopscience.iop.org/article/10.1088/1402-4896/ad92e8" target="_blank" class="text-blue-500 hover:underline">A Generic Volatile Memristor Model</a> [1], which introduces a generic compact model for volatile memristors. The paper presents two variants of the model: one tailored for voltage-controlled devices and the other for current-controlled devices.
+            </p>
+            <p>
+                The MATLAB codes for the model are available on <a href="https://github.com/amrnabilgit/A-Generic-Volatile-Memristor-Model" target="_blank" class="text-blue-500 hover:underline">GitHub</a>.
+            </p>
+        </section>
+        <section id="equations" class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Model's Equations (Quasi-Static Characteristics)</h2>
+            <p class="mb-4">
+                The state variable employed in the model is the device’s resistance, and the model's I-V relationship is given by:
+            </p>
+            <div class="equation">
+                \[ i = \frac{v}{r}, \quad \text{where} \quad R_{\min} < r < R_{\max} \]
+            </div>
+            <p class="mb-4">
+                where \( i \) is the current through the device, \( v \) is the voltage across the device, \( r \) is the resistance of the device and the state variable as well, and \( R_{\min} \) and \( R_{\max} \) are the minimum and maximum resistance of the device, respectively.
+            </p>
+            <p class="mb-4">
+                The quasi-static I-V characteristics of the device are given by:
+            </p>
+            <div class="equation">
+                \[ R_{\infty (SET)} = \begin{cases} 
+                    R_{\min}, & A_1 \cdot i^{M_1} < R_{\min} \\
+                    R_{\max}, & A_1 \cdot i^{M_1} > R_{\max} \\
+                    A_1 \cdot i^{M_1}, & \text{otherwise} 
+                \end{cases} \]
+            </div>
+            <div class="equation">
+                \[ R_{\infty (RESET)} = \begin{cases} 
+                    R_{\min}, & A_2 \cdot i^{M_2} < R_{\min} \\
+                    R_{\max}, & A_2 \cdot i^{M_2} > R_{\max} \\
+                    A_2 \cdot i^{M_2}, & \text{otherwise} 
+                \end{cases} \]
+            </div>
+            <p class="mb-4">
+                Where \( A_1 \), \( A_2 \), \( M_1 \), and \( M_2 \) are fitting parameters that determine the quasi-static characteristics.
+            </p>
+            <p class="mb-4">
+                \( R_{\infty(SET)}(i) \) and \( R_{\infty(RESET)}(i) \) describe the steady-state device resistance as a function of the current flowing through the device. \( R_{\infty(SET)}(i) \) describes the steady-state resistance when switching from the HRS state to the LRS state, while \( R_{\infty(RESET)}(i) \) describes the steady-state resistance during switching from the LRS state to the HRS state.
+            </p>
+        </section>
+        <section id="voltage-controlled" class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Voltage Controlled Model Variant (Temporal Characteristics)</h2>
+            <p class="mb-4">
+                The temporal characteristics of the voltage-controlled variant of the model are given by:
+            </p>
+            <div class="equation">
+                \[ \frac{dr}{dt} = \begin{cases} 
+                    S_1 (v,r), & R_{\infty(SET)}(i) < r \quad \text{and} \quad v > V_h \\
+                    S_2 (v,r), & R_{\infty(RESET)}(i) > r \quad \text{and} \quad v < V_h \\
+                    0, & \text{otherwise} 
+                \end{cases} \]
+            </div>
+            <p class="mb-4">
+                Where \( V_h \) is the hold voltage of the device.
+            </p>
+            <p class="mb-4">
+                \( S_1 (v,r) \) and \( S_2 (v,r) \) are functions describing the rate at which the device switches, dependent on the voltage across the device and its resistance.
+            </p>
+            <p class="mb-4">
+                For the \( Ag/SiO_x \) memristor [2], [3], \( S_1 (v,r) \) and \( S_2 (v,r) \) are given by:
+            </p>
+            <div class="equation">
+                \[ S_1(v,r) = \begin{cases} 
+                    K_1 e^{Cv} \left( \frac{v - V_{th}}{r - R_{\min}} \right), & v > V_{th} \quad \text{and} \quad K_1 e^{Cv} \left( \frac{v - V_{th}}{r - R_{\min}} \right) > -\theta \\
+                    K_1 e^{Cv}, & v \leq V_{th} \quad \text{and} \quad K_1 e^{Cv} > -\theta \\
+                    -\theta, & \text{otherwise} 
+                \end{cases} \]
+            </div>
+            <div class="equation">
+                \[ S_2(v,r) = \begin{cases} 
+                    K_2 \left( \frac{V_h - v}{V_h} \right) r^3, & K_2 \left( \frac{V_h - v}{V_h} \right) r^3 < \theta \\
+                    \theta, & \text{otherwise} 
+                \end{cases} \]
+            </div>
+            <p class="mb-4">
+                Where \( K_1 \), \( K_2 \), \( C \), and \( \theta \) are fitting parameters, and \( V_{th} \) is the threshold voltage of the device. The parameter \( \theta \) limits the rate of change of \( r \) to aid model convergence.
+            </p>
+        </section>
+        <section id="current-controlled" class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Current Controlled Model Variant (Temporal Characteristics)</h2>
+            <p class="mb-4">
+                The temporal characteristics of the current-controlled variant of the model are given by:
+            </p>
+            <div class="equation">
+                \[ \frac{dr}{dt} = \begin{cases} 
+                    S_1 (i,r), & R_{\infty(SET)}(i) < r \\
+                    S_2 (i,r), & R_{\infty(RESET)}(i) > r \quad \text{and} \quad R_{\infty(SET)}(i) \geq r \\
+                    0, & \text{otherwise} 
+                \end{cases} \]
+            </div>
+            <p class="mb-4">
+                \( S_1 (i,r) \) and \( S_2 (i,r) \) describe the rate at which the device switches, dependent on the current through the device rather than the voltage across it.
+            </p>
+            <p class="mb-4">
+                For the Mott memristor [4], \( S_1 (i,r) \) and \( S_2 (i,r) \) are given by:
+            </p>
+            <div class="equation">
+                \[ S_1(i,r) = K_1 r^2 \sqrt{\frac{R_{ins}}{r} - 1} \left( \frac{r i^2}{R_{\max} I_{th}^2} - 1 \right) \]
+            </div>
+            <div class="equation">
+                \[ S_2(i,r) = K_2 r^2 \sqrt{\frac{R_{ins}}{r} - 1} \left( 1 - \frac{r i^2}{R_{\min} I_{h}^2} \right) \]
+            </div>
+            <p class="mb-4">
+                Where \( K_1 \), \( K_2 \), \( I_{th} \), and \( I_{h} \) are fitting parameters, and \( R_{ins} \) is the maximum physical resistance of the device, chosen to be larger than \( R_{\max} \) to ensure \( R_{ins}/r - 1 \) never becomes zero.
+            </p>
+        </section>
+        <section id="code" class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Code Repositories</h2>
+            <p class="mb-4">
+                The source codes for the models discussed in the paper are available on GitHub:
+            </p>
+            <ul class="list-disc pl-6">
+                <li><a href="https://github.com/amrnabilgit/A-Generic-Volatile-Memristor-Model/tree/main/MATLAB" target="_blank" class="text-blue-500 hover:underline">Generic Volatile Memristor Model Codes</a> - Full repository for the models' codes.</li>
+                <li><a href="https://github.com/amrnabilgit/A-Generic-Volatile-Memristor-Model/tree/main/MATLAB/Voltage%20Controlled" target="_blank" class="text-blue-500 hover:underline">Voltage Controlled Volatile Memristor Model</a> - Codes for the voltage-controlled variant.</li>
+                <li><a href="https://github.com/amrnabilgit/A-Generic-Volatile-Memristor-Model/tree/main/MATLAB/Current%20Controlled" target="_blank" class="text-blue-500 hover:underline">Current Controlled Volatile Memristor Model</a> - Codes for the current-controlled variant.</li>
+            </ul>
+        </section>
+        <section id="references" class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">References</h2>
+            <p class="mb-2">[1] A. Nabil, T. N. Kumar, and H. A. F. Almurib, “A generic volatile memristor model,” <i>Physica Scripta</i>, vol. 99, no. 12, p. 125031, 2024, doi: <a href="https://doi.org/10.1088/1402-4896/ad92e8" class="text-blue-500 hover:underline">10.1088/1402-4896/ad92e8</a>.</p>
+            <p class="mb-2">[2] E. Covi, W. Wang, Y. H. Lin, M. Farronato, E. Ambrosi, and D. Ielmini, “Switching Dynamics of Ag-Based Filamentary Volatile Resistive Switching Devices - Part I: Experimental Characterization,” <i>IEEE Trans. Electron Devices</i>, vol. 68, no. 9, pp. 4335–4341, Sep. 2021, doi: <a href="https://doi.org/10.1109/TED.2021.3076029" class="text-blue-500 hover:underline">10.1109/TED.2021.3076029</a>.</p>
+            <p class="mb-2">[3] W. Wang et al., “Switching Dynamics of Ag-Based Filamentary Volatile Resistive Switching Devices - Part II: Mechanism and Modeling,” <i>IEEE Trans. Electron Devices</i>, vol. 68, no. 9, pp. 4342–4349, Sep. 2021, doi: <a href="https://doi.org/10.1109/TED.2021.3095033" class="text-blue-500 hover:underline">10.1109/TED.2021.3095033</a>.</p>
+            <p class="mb-2">[4] M. D. Pickett, G. Medeiros-Ribeiro, and R. S. Williams, “A scalable neuristor built with Mott memristors,” <i>Nat. Mater.</i>, vol. 12, no. 2, pp. 114–117, Feb. 2013, doi: <a href="https://doi.org/10.1038/nmat3510" class="text-blue-500 hover:underline">10.1038/nmat3510</a>.</p>
+        </section>
+    </main>
+    <button id="back-to-top" class="bg-blue- పాయింట్ 600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">Back to Top</button>
+    <script>
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        window.addEventListener('load', () => {
+            if (typeof MathJax === 'undefined') {
+                const equations = document.querySelectorAll('.equation');
+                equations.forEach(eq => {
+                    eq.innerHTML = '<p style="color: red;">Error: MathJax failed to load. Please check your internet connection or try a different browser.</p>';
+                });
+            } else {
+                MathJax.typesetPromise().catch(err => console.error('MathJax typesetting error:', err));
+            }
+        });
+    </script>
+</body>
+</html>
